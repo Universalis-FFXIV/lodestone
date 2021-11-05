@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"log"
 	"strconv"
 	"strings"
 
@@ -39,12 +40,17 @@ func main() {
 		worldName := strings.ToLower(c.Param("worldName"))
 		if worldName == "" {
 			c.AbortWithError(400, errors.New("world name not provided"))
+			return
 		}
 
 		characterName := strings.ToLower(c.Param("characterName"))
 		if characterName == "" {
 			c.AbortWithError(400, errors.New("character name not provided"))
+			return
 		}
+
+		log.Println(worldName)
+		log.Println(characterName)
 
 		for res := range s.SearchCharacters(godestone.CharacterOptions{
 			Name:  characterName,
