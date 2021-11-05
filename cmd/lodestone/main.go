@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"log"
 	"strconv"
 	"strings"
 
@@ -51,6 +52,7 @@ func main() {
 	r.GET("/search/character", func(c *gin.Context) {
 		params := characterSearch{}
 		c.Bind(&params)
+		log.Println(params)
 
 		worldName := params.World
 		if worldName == "" {
