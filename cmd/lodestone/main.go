@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"log"
 	"strconv"
 	"strings"
 
@@ -47,14 +46,10 @@ func main() {
 			c.AbortWithError(400, errors.New("character name not provided"))
 		}
 
-		log.Println(worldName)
-		log.Println(characterName)
 		for res := range s.SearchCharacters(godestone.CharacterOptions{
 			Name:  characterName,
 			World: strings.ToUpper(string(worldName[0])) + worldName[1:], // World name must be captialized
 		}) {
-			log.Println(res)
-
 			if res.Error != nil {
 				c.AbortWithError(500, res.Error)
 				return
