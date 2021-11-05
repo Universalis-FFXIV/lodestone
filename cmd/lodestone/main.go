@@ -15,6 +15,10 @@ type characterSearch struct {
 	Name  string `json:"n"`
 }
 
+type characterResult struct {
+	Bio string `json:"bio"`
+}
+
 func main() {
 	s := godestone.NewScraper(bingode.New(), godestone.EN)
 
@@ -36,7 +40,11 @@ func main() {
 			return
 		}
 
-		c.JSON(200, character)
+		res := characterResult{
+			Bio: character.Bio,
+		}
+
+		c.JSON(200, res)
 	})
 
 	// Character search endpoint
