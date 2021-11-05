@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"log"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -36,21 +36,26 @@ func main() {
 	})
 
 	// Character search endpoint
-	r.GET("/search/character/:worldName/:characterName", func(c *gin.Context) {
+	r.GET("/search/character/:worldName/:firstName/:lastName", func(c *gin.Context) {
 		worldName := strings.ToLower(c.Param("worldName"))
 		if worldName == "" {
 			c.AbortWithError(400, errors.New("world name not provided"))
 			return
 		}
 
-		characterName := strings.ToLower(c.Param("characterName"))
-		if characterName == "" {
-			c.AbortWithError(400, errors.New("character name not provided"))
+		firstName := strings.ToLower(c.Param("firstName"))
+		if firstName == "" {
+			c.AbortWithError(400, errors.New("character first name not provided"))
 			return
 		}
 
-		log.Println(worldName)
-		log.Println(characterName)
+		lastName := strings.ToLower(c.Param("lastName"))
+		if lastName == "" {
+			c.AbortWithError(400, errors.New("character last name not provided"))
+			return
+		}
+
+		characterName := fmt.Sprintf("%s %s", firstName, lastName)
 
 		for res := range s.SearchCharacters(godestone.CharacterOptions{
 			Name:  characterName,
