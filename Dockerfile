@@ -6,8 +6,10 @@ COPY ./ ./
 
 RUN go mod download
 
-RUN GIN_MODE=release go build ./cmd/lodestone -o /lodestone
+ENV GIN_MODE=release
+
+RUN go build ./cmd/lodestone
 
 EXPOSE 3999
 
-CMD [ "/lodestone" ]
+CMD [ "/app/lodestone" ]
