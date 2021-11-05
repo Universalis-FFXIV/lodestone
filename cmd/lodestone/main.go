@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -10,6 +9,11 @@ import (
 	"github.com/karashiiro/bingode"
 	"github.com/xivapi/godestone/v2"
 )
+
+type characterSearch struct {
+	World string `json:"w"`
+	Name  string `json:"n"`
+}
 
 func main() {
 	s := godestone.NewScraper(bingode.New(), godestone.EN)
@@ -36,26 +40,21 @@ func main() {
 	})
 
 	// Character search endpoint
-	r.GET("/search/character/:worldName/:firstName/:lastName", func(c *gin.Context) {
-		worldName := strings.ToLower(c.Param("worldName"))
+	r.GET("/search/character", func(c *gin.Context) {
+		params := characterSearch{}
+		c.Bind(&params)
+
+		worldName := params.World
 		if worldName == "" {
 			c.AbortWithError(400, errors.New("world name not provided"))
 			return
 		}
 
-		firstName := strings.ToLower(c.Param("firstName"))
-		if firstName == "" {
-			c.AbortWithError(400, errors.New("character first name not provided"))
+		characterName := params.Name
+		if characterName == "" {
+			c.AbortWithError(400, errors.New("character name not provided"))
 			return
 		}
-
-		lastName := strings.ToLower(c.Param("lastName"))
-		if lastName == "" {
-			c.AbortWithError(400, errors.New("character last name not provided"))
-			return
-		}
-
-		characterName := fmt.Sprintf("%s %s", firstName, lastName)
 
 		for res := range s.SearchCharacters(godestone.CharacterOptions{
 			Name:  characterName,
