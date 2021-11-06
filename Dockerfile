@@ -6,7 +6,7 @@ COPY ./ ./
 
 RUN go mod download
 
-ENV GIN_MODE=release
+#ENV GIN_MODE=release
 
 RUN go build ./cmd/lodestone
 
