@@ -23,9 +23,10 @@ func main() {
 	s := godestone.NewScraper(bingode.New(), godestone.EN)
 
 	r := gin.Default()
+	api := r.Group("/lodestone")
 
 	// Character endpoint
-	r.GET("/character/:id", func(c *gin.Context) {
+	api.GET("/character/:id", func(c *gin.Context) {
 		cIdStr := c.Param("id")
 
 		cId, err := strconv.ParseUint(cIdStr, 10, 32)
@@ -48,7 +49,7 @@ func main() {
 	})
 
 	// Character search endpoint
-	r.GET("/search/character/:world/:first/:last", func(c *gin.Context) {
+	api.GET("/search/character/:world/:first/:last", func(c *gin.Context) {
 		worldName := strings.ToLower(c.Param("world"))
 		if worldName == "" {
 			c.AbortWithError(400, errors.New("world name not provided"))
