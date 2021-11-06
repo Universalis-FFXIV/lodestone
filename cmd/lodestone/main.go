@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"log"
 	"strconv"
 	"strings"
 
@@ -51,8 +50,11 @@ func main() {
 	// Character search endpoint
 	r.GET("/search/character", func(c *gin.Context) {
 		params := characterSearch{}
-		c.Bind(&params)
-		log.Println(params)
+		err := c.Bind(&params)
+		if err != nil {
+			c.AbortWithError(400, err)
+			return
+		}
 
 		worldName := params.World
 		if worldName == "" {
