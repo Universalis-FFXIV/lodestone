@@ -15,6 +15,10 @@ type characterResult struct {
 	Bio string `json:"bio"`
 }
 
+type characterSearchResult struct {
+	ID uint32 `json:"id"`
+}
+
 func main() {
 	s := godestone.NewScraper(bingode.New(), godestone.EN)
 
@@ -67,7 +71,11 @@ func main() {
 			}
 
 			if strings.ToLower(res.Name) == characterName && strings.ToLower(res.World) == worldName {
-				c.JSON(200, res)
+				r := characterSearchResult{
+					ID: res.ID,
+				}
+
+				c.JSON(200, r)
 				return
 			}
 		}
