@@ -12,7 +12,10 @@ import (
 )
 
 type characterResult struct {
-	Bio string `json:"bio"`
+	Bio    string `json:"bio"`
+	Name   string `json:"name"`
+	World  string `json:"world"`
+	Avatar string `json:"avatar"`
 }
 
 type characterSearchResult struct {
@@ -42,7 +45,10 @@ func main() {
 		}
 
 		res := characterResult{
-			Bio: character.Bio,
+			Bio:    character.Bio,
+			Name:   character.Name,
+			World:  character.World,
+			Avatar: character.Avatar,
 		}
 
 		c.JSON(200, res)
