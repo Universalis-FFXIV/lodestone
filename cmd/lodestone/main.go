@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -9,11 +10,6 @@ import (
 	"github.com/karashiiro/bingode"
 	"github.com/xivapi/godestone/v2"
 )
-
-type characterSearch struct {
-	World string `json:"w"`
-	Name  string `json:"n"`
-}
 
 type characterResult struct {
 	Bio string `json:"bio"`
@@ -48,21 +44,14 @@ func main() {
 	})
 
 	// Character search endpoint
-	r.GET("/search/character", func(c *gin.Context) {
-		params := characterSearch{}
-		err := c.Bind(&params)
-		if err != nil {
-			c.AbortWithError(400, err)
-			return
-		}
-
-		worldName := params.World
+	r.GET("/search/character/:world/:first/:last", func(c *gin.Context) {
+		worldName := strings.ToLower(c.Param("world"))
 		if worldName == "" {
 			c.AbortWithError(400, errors.New("world name not provided"))
 			return
 		}
 
-		characterName := params.Name
+		characterName := strings.ToLower(fmt.Sprintf("%s %s", c.Param("first"), c.Param("last")))
 		if characterName == "" {
 			c.AbortWithError(400, errors.New("character name not provided"))
 			return
